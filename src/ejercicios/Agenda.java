@@ -21,10 +21,9 @@ public class Agenda {
 	}
 
 	public Contacto obtenerPorId(int id) {
-		for (Contacto c : contactos) {
+		for (Contacto c : contactos)
 			if (c.getId() == id)
 				return c;
-		}
 		return null;
 	}
 
@@ -38,9 +37,8 @@ public class Agenda {
 
 		for (Contacto c : contactos) {
 			String nombre = (c.getNombre() + " " + c.getApellidos()).toLowerCase();
-			if (nombre.contains(texto)) {
+			if (nombre.contains(texto))
 				res.add(c);
-			}
 		}
 		return res;
 	}

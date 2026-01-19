@@ -46,11 +46,7 @@ public class Main {
 			} else if (opcion == 4) {
 				int id = leerEntero(sc, "ID del contacto a borrar: ");
 				boolean borrado = agenda.eliminarContactoPorId(id);
-				if (borrado) {
-					System.out.println("Contacto borrado.");
-				} else {
-					System.out.println("No existe un contacto con ese ID.");
-				}
+				System.out.println(borrado ? "Contacto borrado." : "No existe un contacto con ese ID.");
 
 			} else if (opcion == 5) {
 				int id = leerEntero(sc, "ID del contacto al que añadir teléfono: ");
@@ -59,8 +55,9 @@ public class Main {
 				if (c == null) {
 					System.out.println("No existe un contacto con ese ID.");
 				} else {
-					Telefono t = crearTelefono(sc);
-					c.agregarTelefono(t);
+					String numero = leerTextoNoVacio(sc, "Número teléfono: ");
+					TipoTelefono tipo = elegirTipoTelefono(sc);
+					c.agregarTelefono(numero, tipo);
 					System.out.println("Teléfono añadido.");
 				}
 
@@ -84,7 +81,7 @@ public class Main {
 		System.out.println("0) Salir");
 	}
 
-	// ---------- Creación de objetos desde consola ----------
+	// ---------- Creación desde consola ----------
 
 	private static Contacto crearContacto(Scanner sc, int id) {
 		String nombre = leerTextoNoVacio(sc, "Nombre: ");
@@ -96,7 +93,9 @@ public class Main {
 
 		int cuantos = leerEntero(sc, "¿Cuántos teléfonos añadir?: ");
 		for (int i = 0; i < cuantos; i++) {
-			c.agregarTelefono(crearTelefono(sc));
+			String numero = leerTextoNoVacio(sc, "Número teléfono: ");
+			TipoTelefono tipo = elegirTipoTelefono(sc);
+			c.agregarTelefono(numero, tipo);
 		}
 		return c;
 	}
@@ -113,26 +112,20 @@ public class Main {
 		return new Direccion(tipoVia, numero, bloque, escalera, portal, letra);
 	}
 
-	private static Telefono crearTelefono(Scanner sc) {
-		String numero = leerTextoNoVacio(sc, "Número teléfono: ");
-		TipoTelefono tipo = elegirTipoTelefono(sc);
-		return new Telefono(numero, tipo);
-	}
-
 	private static TipoVia elegirTipoVia(Scanner sc) {
 		TipoVia[] valores = TipoVia.values();
-		for (int i = 0; i < valores.length; i++) {
+		for (int i = 0; i < valores.length; i++)
 			System.out.println((i + 1) + ") " + valores[i]);
-		}
+
 		int opcion = leerEnteroRango(sc, "Tipo vía: ", 1, valores.length);
 		return valores[opcion - 1];
 	}
 
 	private static TipoTelefono elegirTipoTelefono(Scanner sc) {
 		TipoTelefono[] valores = TipoTelefono.values();
-		for (int i = 0; i < valores.length; i++) {
+		for (int i = 0; i < valores.length; i++)
 			System.out.println((i + 1) + ") " + valores[i]);
-		}
+
 		int opcion = leerEnteroRango(sc, "Tipo teléfono: ", 1, valores.length);
 		return valores[opcion - 1];
 	}
@@ -147,9 +140,8 @@ public class Main {
 		while (texto.isBlank()) {
 			System.out.print(msg);
 			texto = sc.nextLine().trim();
-			if (texto.isBlank()) {
+			if (texto.isBlank())
 				System.out.println("ERROR - No puede estar vacío");
-			}
 		}
 		return texto;
 	}
@@ -169,9 +161,8 @@ public class Main {
 		int n;
 		do {
 			n = leerEntero(sc, msg);
-			if (n < min || n > max) {
+			if (n < min || n > max)
 				System.out.println("Debe estar entre " + min + " y " + max);
-			}
 		} while (n < min || n > max);
 		return n;
 	}

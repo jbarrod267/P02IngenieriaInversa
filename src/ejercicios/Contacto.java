@@ -32,8 +32,9 @@ public class Contacto {
 		return apellidos;
 	}
 
-	public void agregarTelefono(Telefono t) {
-		telefonos.add(t);
+	// COMPOSICIÓN: Contacto crea el teléfono
+	public void agregarTelefono(String numero, TipoTelefono tipo) {
+		telefonos.add(new Telefono(numero, tipo));
 	}
 
 	@Override
