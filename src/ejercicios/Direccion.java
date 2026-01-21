@@ -17,7 +17,6 @@ public class Direccion {
 		this.letra = letra;
 	}
 
-	// 🔹 Direccion decide el tipo de vía
 	public static Direccion crearDesdeConsola(Scanner sc) {
 		TipoVia tipoVia = elegirTipoVia(sc);
 		int numero = Main.leerEntero(sc, "Número: ");

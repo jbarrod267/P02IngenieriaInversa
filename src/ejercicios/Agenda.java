@@ -44,7 +44,6 @@ public class Agenda {
 		return res;
 	}
 
-	// 🔹 Agenda crea el contacto
 	public Contacto crearContacto(Scanner sc) {
 		int id = getSiguienteId();
 

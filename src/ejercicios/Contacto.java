@@ -33,7 +33,6 @@ public class Contacto {
 		return apellidos;
 	}
 
-	// 🔹 Contacto gestiona el teléfono
 	public void agregarTelefonoDesdeConsola(Scanner sc) {
 		String numero = Main.leerTextoNoVacio(sc, "Número teléfono: ");
 		TipoTelefono tipo = elegirTipoTelefono(sc);

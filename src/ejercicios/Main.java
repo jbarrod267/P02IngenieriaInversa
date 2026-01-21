@@ -63,8 +63,6 @@ public class Main {
 		System.out.println("0) Salir");
 	}
 
-	// ---------- MÉTODOS DE LECTURA ----------
-
 	public static String leerTexto(Scanner sc, String msg) {
 		System.out.print(msg);
 		return sc.nextLine().trim();
