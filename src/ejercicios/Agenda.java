@@ -2,13 +2,14 @@ package ejercicios;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Agenda {
 
 	private List<Contacto> contactos = new ArrayList<>();
 	private int siguienteId = 1;
 
-	public int getSiguienteId() {
+	private int getSiguienteId() {
 		return siguienteId++;
 	}
 
@@ -41,5 +42,24 @@ public class Agenda {
 				res.add(c);
 		}
 		return res;
+	}
+
+	// 🔹 Agenda crea el contacto
+	public Contacto crearContacto(Scanner sc) {
+		int id = getSiguienteId();
+
+		String nombre = Main.leerTextoNoVacio(sc, "Nombre: ");
+		String apellidos = Main.leerTextoNoVacio(sc, "Apellidos: ");
+		String email = Main.leerTexto(sc, "Email (opcional): ");
+
+		Direccion direccion = Direccion.crearDesdeConsola(sc);
+		Contacto c = new Contacto(id, nombre, apellidos, email, direccion);
+
+		int cuantos = Main.leerEntero(sc, "¿Cuántos teléfonos añadir?: ");
+		for (int i = 0; i < cuantos; i++) {
+			c.agregarTelefonoDesdeConsola(sc);
+		}
+
+		return c;
 	}
 }

@@ -2,6 +2,7 @@ package ejercicios;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Contacto {
 
@@ -32,9 +33,20 @@ public class Contacto {
 		return apellidos;
 	}
 
-	// COMPOSICIÓN: Contacto crea el teléfono
-	public void agregarTelefono(String numero, TipoTelefono tipo) {
+	// 🔹 Contacto gestiona el teléfono
+	public void agregarTelefonoDesdeConsola(Scanner sc) {
+		String numero = Main.leerTextoNoVacio(sc, "Número teléfono: ");
+		TipoTelefono tipo = elegirTipoTelefono(sc);
 		telefonos.add(new Telefono(numero, tipo));
+	}
+
+	private TipoTelefono elegirTipoTelefono(Scanner sc) {
+		TipoTelefono[] valores = TipoTelefono.values();
+		for (int i = 0; i < valores.length; i++)
+			System.out.println((i + 1) + ") " + valores[i]);
+
+		int opcion = Main.leerEnteroRango(sc, "Tipo teléfono: ", 1, valores.length);
+		return valores[opcion - 1];
 	}
 
 	@Override

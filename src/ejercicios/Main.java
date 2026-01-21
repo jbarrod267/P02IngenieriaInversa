@@ -15,56 +15,38 @@ public class Main {
 			opcion = leerEntero(sc, "Opción: ");
 
 			if (opcion == 1) {
-				Contacto nuevo = crearContacto(sc, agenda.getSiguienteId());
-				agenda.agregarContacto(nuevo);
-				System.out.println("Contacto añadido con ID " + nuevo.getId());
+				Contacto c = agenda.crearContacto(sc);
+				agenda.agregarContacto(c);
+				System.out.println("Contacto añadido con ID " + c.getId());
 
 			} else if (opcion == 2) {
 				List<Contacto> contactos = agenda.listarContactos();
-				if (contactos.isEmpty()) {
+				if (contactos.isEmpty())
 					System.out.println("La agenda está vacía.");
-				} else {
+				else
 					for (Contacto c : contactos) {
 						System.out.println(c);
-						System.out.println("---------------------------------");
+						System.out.println("---------------------------");
 					}
-				}
 
 			} else if (opcion == 3) {
 				String texto = leerTextoNoVacio(sc, "Buscar por nombre/apellidos: ");
-				List<Contacto> resultados = agenda.buscarPorNombre(texto);
-
-				if (resultados.isEmpty()) {
-					System.out.println("No se encontraron contactos.");
-				} else {
-					for (Contacto c : resultados) {
-						System.out.println(c);
-						System.out.println("---------------------------------");
-					}
-				}
+				for (Contacto c : agenda.buscarPorNombre(texto))
+					System.out.println(c);
 
 			} else if (opcion == 4) {
-				int id = leerEntero(sc, "ID del contacto a borrar: ");
-				boolean borrado = agenda.eliminarContactoPorId(id);
-				System.out.println(borrado ? "Contacto borrado." : "No existe un contacto con ese ID.");
+				int id = leerEntero(sc, "ID a borrar: ");
+				System.out.println(agenda.eliminarContactoPorId(id) ? "Contacto borrado." : "No existe ese ID.");
 
 			} else if (opcion == 5) {
-				int id = leerEntero(sc, "ID del contacto al que añadir teléfono: ");
+				int id = leerEntero(sc, "ID del contacto: ");
 				Contacto c = agenda.obtenerPorId(id);
-
-				if (c == null) {
-					System.out.println("No existe un contacto con ese ID.");
-				} else {
-					String numero = leerTextoNoVacio(sc, "Número teléfono: ");
-					TipoTelefono tipo = elegirTipoTelefono(sc);
-					c.agregarTelefono(numero, tipo);
+				if (c != null) {
+					c.agregarTelefonoDesdeConsola(sc);
 					System.out.println("Teléfono añadido.");
+				} else {
+					System.out.println("No existe ese contacto.");
 				}
-
-			} else if (opcion == 0) {
-				System.out.println("Saliendo...");
-			} else {
-				System.out.println("Opción no válida.");
 			}
 
 		} while (opcion != 0);
@@ -81,61 +63,14 @@ public class Main {
 		System.out.println("0) Salir");
 	}
 
-	// ---------- Creación desde consola ----------
+	// ---------- MÉTODOS DE LECTURA ----------
 
-	private static Contacto crearContacto(Scanner sc, int id) {
-		String nombre = leerTextoNoVacio(sc, "Nombre: ");
-		String apellidos = leerTextoNoVacio(sc, "Apellidos: ");
-		String email = leerTexto(sc, "Email (opcional): ");
-
-		Direccion direccion = crearDireccion(sc);
-		Contacto c = new Contacto(id, nombre, apellidos, email, direccion);
-
-		int cuantos = leerEntero(sc, "¿Cuántos teléfonos añadir?: ");
-		for (int i = 0; i < cuantos; i++) {
-			String numero = leerTextoNoVacio(sc, "Número teléfono: ");
-			TipoTelefono tipo = elegirTipoTelefono(sc);
-			c.agregarTelefono(numero, tipo);
-		}
-		return c;
-	}
-
-	private static Direccion crearDireccion(Scanner sc) {
-		TipoVia tipoVia = elegirTipoVia(sc);
-		int numero = leerEntero(sc, "Número: ");
-
-		String bloque = leerTexto(sc, "Bloque: ");
-		String escalera = leerTexto(sc, "Escalera: ");
-		String portal = leerTexto(sc, "Portal: ");
-		String letra = leerTexto(sc, "Letra: ");
-
-		return new Direccion(tipoVia, numero, bloque, escalera, portal, letra);
-	}
-
-	private static TipoVia elegirTipoVia(Scanner sc) {
-		TipoVia[] valores = TipoVia.values();
-		for (int i = 0; i < valores.length; i++)
-			System.out.println((i + 1) + ") " + valores[i]);
-
-		int opcion = leerEnteroRango(sc, "Tipo vía: ", 1, valores.length);
-		return valores[opcion - 1];
-	}
-
-	private static TipoTelefono elegirTipoTelefono(Scanner sc) {
-		TipoTelefono[] valores = TipoTelefono.values();
-		for (int i = 0; i < valores.length; i++)
-			System.out.println((i + 1) + ") " + valores[i]);
-
-		int opcion = leerEnteroRango(sc, "Tipo teléfono: ", 1, valores.length);
-		return valores[opcion - 1];
-	}
-
-	private static String leerTexto(Scanner sc, String msg) {
+	public static String leerTexto(Scanner sc, String msg) {
 		System.out.print(msg);
 		return sc.nextLine().trim();
 	}
 
-	private static String leerTextoNoVacio(Scanner sc, String msg) {
+	public static String leerTextoNoVacio(Scanner sc, String msg) {
 		String texto = "";
 		while (texto.isBlank()) {
 			System.out.print(msg);
@@ -146,7 +81,7 @@ public class Main {
 		return texto;
 	}
 
-	private static int leerEntero(Scanner sc, String msg) {
+	public static int leerEntero(Scanner sc, String msg) {
 		while (true) {
 			try {
 				System.out.print(msg);
@@ -157,7 +92,7 @@ public class Main {
 		}
 	}
 
-	private static int leerEnteroRango(Scanner sc, String msg, int min, int max) {
+	public static int leerEnteroRango(Scanner sc, String msg, int min, int max) {
 		int n;
 		do {
 			n = leerEntero(sc, msg);
